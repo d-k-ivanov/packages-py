@@ -1,0 +1,11 @@
+[project]
+name = "PyPI"
+description = "Custom Python Package Indexs"
+dependencies = ["requests"]
+dynamic = ["version", "readme", "optional-dependencies"]
+
+[tool.flake8]
+max-line-length = 230
+
+[tool.black]
+line-length = 230
