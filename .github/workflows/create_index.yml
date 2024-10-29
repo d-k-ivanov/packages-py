@@ -24,7 +24,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           REPO_NAME: ${{ github.repository }}
-        run: python create_index/create_index.py
+        run: python package_index/create_index.py
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
