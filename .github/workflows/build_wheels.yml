@@ -9,25 +9,25 @@ on:
         type: string
         default: "facebookresearch/pytorch3d"
       repo-tag:
-        description: "Repository tag, branch, or commit hash (v0.7.6, v0.7.7, V0.7.8, etc.)"
+        description: "Repository tag, branch, or commit hash (v0.7.6,v0.7.7,V0.7.8, etc.)"
         type: string
         default: "V0.7.8"
       repo-subdir:
         description: "Relative path to package dir where setup.py is found (or empty if root)"
         type: string
       torch-version:
-        description: "Torch versions, separated with a comma (1.9.0, 2.0.0, 2.4.1, 2.5.1, etc.)"
+        description: "Torch versions, separated with a comma (1.9.0,2.0.0,2.4.1,2.5.1,etc.)"
         required: true
         type: string
         default: "2.5.1"
       limit-python:
-        description: "Python versions, separated with a comma (3.9, 3.10, 3.11, 3.12, etc.)"
+        description: "Python versions, separated with a comma (3.9,3.10,3.11,3.12,etc.)"
         type: string
-        default: "3.12"
+        default: "3.11"
       limit-compute-platform:
-        description: "PyTorch compute platforms, separated with a comma (cpu, cu102, cu111, cu118, cu124, etc.)"
+        description: "PyTorch compute platforms, separated with a comma (cpu,cu102,cu111,cu118,cu124,etc.)"
         type: string
-        default: "cpu, cu124"
+        default: "cpu,cu124"
       include-hash:
         description: "Include commit hash in version"
         type: boolean
@@ -53,7 +53,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
 
       - name: Checkout package repository
         uses: actions/checkout@v4
