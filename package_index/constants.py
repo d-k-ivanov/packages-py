@@ -29,7 +29,7 @@ HTML_HEAD = """
   <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 
   <title>
-    Custom Python Package Index
+    Python Package Index
   </title>
 </head>
 """
@@ -92,29 +92,6 @@ HTML_BODY_CSS = """
   .description {
     font-weight: 300;
   }
-
-  /* Footer */
-  body {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  .content {
-    flex: 1;
-    padding: 20px;
-  }
-
-  .footer {
-    background-color: #f5f5f5;
-    color: #08183f;
-    text-align: center;
-    padding: 20px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-  }
 </style>
 """
 
@@ -124,7 +101,7 @@ HTML_BODY_END = "</div>\n</body>"
 HTML_BODY_MAIN_PAGE_PREFIX = """
   <section class="header">
     <h2 class="title">
-      Custom Python Package Index
+      Python Package Index
     </h2>
   </section>
   You can install packages with :

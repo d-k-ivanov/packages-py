@@ -1,4 +1,4 @@
-# Custom Python Package Index
+# Python Package Index
 
 ## References
 

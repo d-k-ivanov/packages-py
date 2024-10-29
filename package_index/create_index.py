@@ -7,7 +7,7 @@ import pathlib
 import requests
 
 from constants import *
-from tools import delete_from_disk, get_short_description
+from tools import delete_from_disk, get_short_description, get_short_description_package
 
 
 def normalize_pep_503(name):
@@ -65,7 +65,7 @@ def create_package_index(links_wheels, output_file):
             file_name = link_wheel.rsplit("/", 1)[1].replace(HTML_PLUS, "+")
             if file_name not in file_names:
                 file_names.add(file_name)
-                f.write(f'<a class="card" href="{link_wheel}">{file_name}</a><br>\n')
+                f.write(f'<a class="card" href="{link_wheel}">{file_name}<br/><span class="description">{get_short_description_package(file_name)}</span></a><br>\n')
 
         f.write(HTML_BODY_END)
         f.write(HTML_END)
@@ -84,8 +84,7 @@ def create_pep_503_index(packages_dict, output_dir: pathlib.Path):
 
 def main():
     github_token = os.environ["GITHUB_TOKEN"]
-    # repository = os.environ["REPO_NAME"]
-    repository = "d-k-ivanov/pytorch3d_packages_builder"
+    repository = os.environ["REPO_NAME"]
     output_dir = pathlib.Path("_site")
 
     headers = {"Authorization": "token " + github_token}

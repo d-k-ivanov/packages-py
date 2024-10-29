@@ -1,6 +1,6 @@
 [project]
 name = "PyPI"
-description = "Custom Python Package Indexs"
+description = "Python Package Indexs"
 dependencies = ["requests"]
 dynamic = ["version", "readme", "optional-dependencies"]
 
