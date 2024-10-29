@@ -1,4 +1,4 @@
-name: Build Wheels
+name: Build Wheels - PyTorch
 
 on:
   workflow_dispatch:
@@ -69,7 +69,7 @@ jobs:
           MACOS_WHEELS: ${{ inputs.macos-wheels }}
         run: |
           set -eu
-          echo "matrix=$(python get_jobs.py)" >> $GITHUB_OUTPUT
+          echo "matrix=$(python pytorch/get_jobs.py)" >> $GITHUB_OUTPUT
 
     outputs:
       matrix: ${{ steps.job-matrix.outputs.matrix }}
@@ -174,7 +174,7 @@ jobs:
           TORCH_VERSION: ${{ matrix.torch-version }}
           PYTHON_VERSION: ${{ matrix.python-version }}
           COMPUTE_PLATFORM: ${{ matrix.compute-platform }}
-        run: bash _builder/apply_patches.sh
+        run: bash _builder/pytorch/apply_patches.sh
         shell: bash
 
       - name: Build CPU wheel

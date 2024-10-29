@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import json
 import os
 from dataclasses import dataclass
@@ -70,6 +73,7 @@ def main():
 
             if limit_python and python_version not in limit_python:
                 continue
+
             if limit_compute_platform and compute_platform not in limit_compute_platform:
                 continue
 
