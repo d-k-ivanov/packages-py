@@ -3,7 +3,6 @@
 
 import os
 import pathlib
-import requests
 
 import google.generativeai as genai
 
