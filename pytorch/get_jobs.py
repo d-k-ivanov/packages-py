@@ -68,6 +68,7 @@ def main():
         for os_name, python_version, compute_platform in product(oses_names, TORCH_RELEASES[torch_version].python_versions, TORCH_RELEASES[torch_version].compute_platforms):
             if os_name in (MACOS_X64, MACOS_ARM64) and compute_platform != "cpu":
                 continue
+
             if compute_platform.startswith("rocm"):
                 continue
 
