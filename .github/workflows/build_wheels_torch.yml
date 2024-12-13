@@ -131,7 +131,7 @@ jobs:
         env:
           CUDA_VERSION: ${{ matrix.compute-platform }}
         run: |
-          source _builder/.github/workflows/cuda/${{ runner.os }}_install.sh
+          source _builder/.github/workflows/cuda/${{ runner.os }}_cuda_install.sh
         shell: bash
 
       - name: Set up Python ${{ matrix.python-version }}
