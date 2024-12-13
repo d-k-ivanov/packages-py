@@ -51,7 +51,7 @@ def create_main_index(packages, output_file):
         for package in packages:
             print(f"\t{package}")
             f.write(f'<a class="card" href="{normalize_pep_503(package)}/">{package}<br/><span class="description">{get_short_description(package)}</span></a><br>\n')
-            # time.sleep(1)
+            time.sleep(2)
 
         f.write(HTML_BODY_END)
         f.write(HTML_END)
@@ -72,7 +72,7 @@ def create_package_index(package, links_wheels, output_file):
                 print(f"\t{file_name}")
                 file_names.add(file_name)
                 f.write(f'<a class="card" href="{link_wheel}">{file_name}<br/><span class="description">{get_short_description_package(file_name)}</span></a><br>\n')
-                # time.sleep(1)
+                time.sleep(2)
 
         f.write(HTML_BODY_END)
         f.write(HTML_END)
