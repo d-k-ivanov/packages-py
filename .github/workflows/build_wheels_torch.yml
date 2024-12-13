@@ -23,7 +23,7 @@ on:
       limit-python:
         description: "Python versions, separated with a comma (3.9,3.10,3.11,3.12,etc.)"
         type: string
-        default: "3.9,3.10,3.11,3.12,3.13"
+        default: "3.10,3.11,3.12"
       limit-compute-platform:
         description: "PyTorch compute platforms, separated with a comma (cpu,cu102,cu111,cu118,cu124,etc.)"
         type: string
