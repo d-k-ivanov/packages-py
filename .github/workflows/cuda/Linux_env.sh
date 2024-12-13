@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 if [[ $CUDA_VERSION == "cu102" ]]; then
   CUDA_SHORT=${CUDA_VERSION:2:2}.${CUDA_VERSION:4:1}

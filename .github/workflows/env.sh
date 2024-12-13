@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 case $OS in
   "Linux")

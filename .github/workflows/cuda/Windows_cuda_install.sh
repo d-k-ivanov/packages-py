@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 declare -A CUDA_LINKS=(
   ["cu102"]="https://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_441.22_win10.exe"

@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 CUDA_SHORT=${CUDA_VERSION:2:2}.${CUDA_VERSION:4:1}
 export CUDA_HOME="/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v$CUDA_SHORT"

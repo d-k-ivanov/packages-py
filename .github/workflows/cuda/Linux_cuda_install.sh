@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 if [[ $CUDA_VERSION == "cu102" ]]; then
   distro=ubuntu1804
