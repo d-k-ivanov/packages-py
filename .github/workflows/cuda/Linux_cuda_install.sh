@@ -24,6 +24,10 @@ elif [[ $CUDA_VERSION == @(cu120|cu121|cu122|cu123) ]]; then
   distro=ubuntu2204
   sudo apt install --no-install-recommends gcc-12 g++-12
   sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 120 --slave /usr/bin/g++ g++ /usr/bin/g++-12 --slave /usr/bin/gcov gcov /usr/bin/gcov-12
+elif [[ $CUDA_VERSION =="cu124" ]]; then
+  distro=ubuntu2204
+  sudo apt install --no-install-recommends gcc-13 g++-13
+  sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 130 --slave /usr/bin/g++ g++ /usr/bin/g++-13 --slave /usr/bin/gcov gcov /usr/bin/gcov-13
 elif [[ $CUDA_VERSION == @(cu125|cu126) ]]; then
   distro=ubuntu2404
   sudo apt install --no-install-recommends gcc-13 g++-13
