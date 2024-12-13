@@ -95,7 +95,7 @@ HTML_BODY_CSS = """
 </style>
 """
 
-HTML_BODY_BEGIN = '<body>\n<div class="container">'
+HTML_BODY_BEGIN = '<body>\n<div class="container">\n'
 HTML_BODY_END = "</div>\n</body>"
 
 HTML_BODY_MAIN_PAGE_PREFIX = """

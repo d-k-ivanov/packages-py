@@ -47,28 +47,32 @@ def create_main_index(packages, output_file):
         f.write(HTML_BODY_BEGIN)
         f.write(HTML_BODY_MAIN_PAGE_PREFIX)
 
+        print("Packages in Index:")
         for package in packages:
+            print(f"\t{package}")
             f.write(f'<a class="card" href="{normalize_pep_503(package)}/">{package}<br/><span class="description">{get_short_description(package)}</span></a><br>\n')
-            time.sleep(5)
+            # time.sleep(1)
 
         f.write(HTML_BODY_END)
         f.write(HTML_END)
 
 
-def create_package_index(links_wheels, output_file):
+def create_package_index(package, links_wheels, output_file):
     with open(output_file, "w") as f:
         f.write(HTML_BEGIN)
         f.write(HTML_HEAD)
         f.write(HTML_BODY_CSS)
         f.write(HTML_BODY_BEGIN)
 
+        print(f"Wheels in {package}:")
         file_names = set()
         for link_wheel in links_wheels:
             file_name = link_wheel.rsplit("/", 1)[1].replace(HTML_PLUS, "+")
             if file_name not in file_names:
+                print(f"\t{file_name}")
                 file_names.add(file_name)
                 f.write(f'<a class="card" href="{link_wheel}">{file_name}<br/><span class="description">{get_short_description_package(file_name)}</span></a><br>\n')
-                time.sleep(5)
+                # time.sleep(1)
 
         f.write(HTML_BODY_END)
         f.write(HTML_END)
@@ -82,7 +86,7 @@ def create_pep_503_index(packages_dict, output_dir: pathlib.Path):
     for package in packages:
         package_dir = output_dir / normalize_pep_503(package)
         package_dir.mkdir()
-        create_package_index(packages_dict[package], package_dir / "index.html")
+        create_package_index(package, packages_dict[package], package_dir / "index.html")
 
 
 def main():
