@@ -21,10 +21,7 @@ def get_short_description(term):
     if not os.getenv("GOOGLE_API_KEY"):
         return term
     model = genai.GenerativeModel("gemini-1.5-flash")
-    request = f"""
-        Write a one-line description of {term} no more than 20 words.
-        Use the term in the description.
-    """
+    request = f"Write a one-line but complete description of {term} no more than 20 words."
     try:
         response = model.generate_content(request)
         return response.text.replace("\n", "") if response else term

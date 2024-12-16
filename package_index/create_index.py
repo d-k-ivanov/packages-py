@@ -51,7 +51,7 @@ def create_main_index(packages, output_file):
         for package in packages:
             print(f"\t{package}")
             f.write(f'<a class="card" href="{normalize_pep_503(package)}/">{package}<br/><span class="description">{get_short_description(package)}</span></a><br>\n')
-            time.sleep(2)
+            # time.sleep(2)
 
         f.write(HTML_BODY_END)
         f.write(HTML_END)
