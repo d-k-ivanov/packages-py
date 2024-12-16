@@ -123,7 +123,7 @@ jobs:
           fi
 
           if [ -f pyproject.toml ]; then
-            sed -i $I_ARG "s/\(version=\)\(.*\)/\1\"\2$VERSION_SUFFIX\"/" pyproject.toml
+            sed -i $I_ARG "s/\(version=\"\)\(.*\)\"/\1\2$VERSION_SUFFIX\"/" pyproject.toml
           fi
         shell: bash
 
