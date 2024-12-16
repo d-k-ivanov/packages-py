@@ -189,7 +189,7 @@ jobs:
           OS: ${{ runner.os }}
         run: |
           source _builder/.github/workflows/env.sh
-          python -m build --wheel --no-isolation --outdir dist
+          python -m build --wheel --outdir dist
         shell: bash
 
       - name: Build CUDA wheel
@@ -200,7 +200,7 @@ jobs:
         run: |
           source _builder/.github/workflows/cuda/${{ runner.os }}_env.sh
           source _builder/.github/workflows/env.sh
-          python -m build --wheel --no-isolation --outdir dist
+          python -m build --wheel --outdir dist
         shell: bash
 
       - uses: actions/upload-artifact@v4
