@@ -8,7 +8,7 @@ import pathlib
 import requests
 
 from constants import *
-from tools import delete_from_disk, get_short_description, get_short_description_package
+from tools import delete_from_disk, get_short_description, get_short_description_package, get_short_description_packages
 
 
 def normalize_pep_503(name):
@@ -65,14 +65,15 @@ def create_package_index(package, links_wheels, output_file):
         f.write(HTML_BODY_BEGIN)
 
         print(f"Wheels in {package}:")
+        descriptions = eval(get_short_description_packages([link.rsplit("/", 1)[1].replace(HTML_PLUS, "+") for link in links_wheels]))
+
         file_names = set()
         for link_wheel in links_wheels:
             file_name = link_wheel.rsplit("/", 1)[1].replace(HTML_PLUS, "+")
             if file_name not in file_names:
                 print(f"\t{file_name}")
                 file_names.add(file_name)
-                f.write(f'<a class="card" href="{link_wheel}">{file_name}<br/><span class="description">{get_short_description_package(file_name)}</span></a><br>\n')
-                time.sleep(2)
+                f.write(f'<a class="card" href="{link_wheel}">{file_name}<br/><span class="description">{descriptions[file_name]}</span></a><br>\n')
 
         f.write(HTML_BODY_END)
         f.write(HTML_END)
