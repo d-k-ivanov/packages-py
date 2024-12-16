@@ -63,7 +63,7 @@ def get_short_description_packages(packages):
         Output only the dictionary in curly braces, nothing more.
         Each package file name starts with the name of a package.
         Follows the environment where the package is intended to be used.
-        Pytorch3D and PyTorch3 are different packages.
+        Pytorch3D and PyTorch are different packages.
         Where the abbreviations are::
             'pt' is PyTorch,
             'cpu' is CPU,
