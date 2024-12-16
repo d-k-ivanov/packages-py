@@ -103,7 +103,7 @@ jobs:
           rm -R _tmp
         shell: bash
 
-      - name: Set version suffix in setup.py
+      - name: Set version suffix
         run: |
           set -eu
 
@@ -118,7 +118,13 @@ jobs:
           fi
 
           VERSION_SUFFIX=+${HASH}pt${{ matrix.torch-version }}${{ matrix.compute-platform }}
-          sed -i $I_ARG "s/\(    version=\)\(.*\)\(\,$\)/\1\2 + \"$VERSION_SUFFIX\"\3/" setup.py
+          if [ -f setup.py ]; then
+            sed -i $I_ARG "s/\(    version=\)\(.*\)\(\,$\)/\1\2 + \"$VERSION_SUFFIX\"\3/" setup.py
+          fi
+
+          if [ -f pyproject.toml ]; then
+            sed -i $I_ARG "s/\(version=\)\(.*\)/\1\"\2$VERSION_SUFFIX\"/" pyproject.toml
+          fi
         shell: bash
 
       - name: Checkout
