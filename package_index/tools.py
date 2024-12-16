@@ -21,7 +21,7 @@ def get_short_description(term):
     if not os.getenv("GOOGLE_API_KEY"):
         return term
     model = genai.GenerativeModel("gemini-1.5-flash")
-    request = f"Write a one-line but complete description of {term} no more than 20 words."
+    request = f"Write a one-line but complete description of {term} using 20 words."
     try:
         response = model.generate_content(request)
         return response.text.replace("\n", "") if response else term
@@ -34,7 +34,7 @@ def get_short_description_package(package):
         return package
     model = genai.GenerativeModel("gemini-1.5-flash")
     request = f"""
-        Write a one-line description of {package} no more than 20 words using versions in the package name.
+        Write a one-line description of {package} using no more than 20 words and versions in the package name.
         Where:
             'pt' is PyTorch,
             'cpu' is CPU,
@@ -58,7 +58,7 @@ def get_short_description_packages(packages):
         return str({package: package for package in packages})
     model = genai.GenerativeModel("gemini-1.5-flash")
     request = f"""
-        Generate a dictionary of one-line descriptions for each package file name in {packages} no more than 20 words using versions in the package name.
+        Generate a dictionary of one-line descriptions for each package file name in {packages} using no more than 20 words and versions in the package name.
         Use package names as keys.
         Output only the dictionary in curly braces, nothing more.
         Each package file name starts with the name of a package.
