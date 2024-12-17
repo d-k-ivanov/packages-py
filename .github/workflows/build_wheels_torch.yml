@@ -74,7 +74,7 @@ jobs:
     outputs:
       matrix: ${{ steps.job-matrix.outputs.matrix }}
 
-  build-wheels:
+  whl:
     needs: get-jobs
     runs-on: ${{ matrix.os }}
 
