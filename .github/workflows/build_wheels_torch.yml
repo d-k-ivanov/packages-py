@@ -53,7 +53,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Checkout package repository
         uses: actions/checkout@v4
@@ -74,7 +74,7 @@ jobs:
     outputs:
       matrix: ${{ steps.job-matrix.outputs.matrix }}
 
-  whl:
+  build-wheels:
     needs: get-jobs
     runs-on: ${{ matrix.os }}
 
@@ -89,6 +89,7 @@ jobs:
           repository: ${{ inputs.repo }}
           ref: ${{ inputs.repo-tag }}
           sparse-checkout: ${{ inputs.repo-subdir }}
+          submodules: true
 
       # To overcome Windows path length problems
       - name: Move files

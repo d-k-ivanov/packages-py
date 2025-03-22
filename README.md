@@ -7,7 +7,7 @@ This repository serves as a toolset for building and indexing Python packages.
 - **OS**: `windows-2019`, `ubuntu-24.04`, `macos-12(X64)`, `macos-14(ARM)`
 - **Platforms**: `cpu`, `cuda`, `rocm` (see: `pytorch/get_jobs.py`)
 - **Python**: `3.9` – `3.13`
-- **PyTorch**: `1.11.0` – `2.5.1` (see: `pytorch/get_jobs.py`)
+- **PyTorch**: `1.11.0` – `2.6.0` (see: `pytorch/get_jobs.py`)
 
 ## Workflows
 
