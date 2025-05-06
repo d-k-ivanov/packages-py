@@ -83,6 +83,28 @@ jobs:
       matrix: ${{ fromJson(needs.get-jobs.outputs.matrix) }}
 
     steps:
+      - name: Free up space
+        if: ${{ runner.os == 'Linux' }}
+        run: |
+          echo "Disk space before cleanup:"
+          df -h
+          echo "Cleaning up disk space..."
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/local/.ghcup
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf /opt/hostedtoolcache/PyPy
+          sudo rm -rf /opt/hostedtoolcache/go
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf /usr/local/lib/heroku
+          sudo rm -rf /usr/local/share/chromium
+          echo "Cleaning up apt packages..."
+          sudo apt purge -y firefox google-chrome-stable microsoft-edge-stable
+          sudo apt-get clean
+          echo "Disk space after cleanup:"
+          df -h
+
       - name: Checkout package repository
         uses: actions/checkout@v4
         with:
@@ -108,9 +130,9 @@ jobs:
         run: |
           set -eu
 
-          I_ARG=""
           if [[ "${{ runner.os }}" == "macOS" ]]; then
-            I_ARG="''"
+            brew install gnu-sed
+            PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
           fi
 
           HASH=""
@@ -120,11 +142,14 @@ jobs:
 
           VERSION_SUFFIX=+${HASH}pt${{ matrix.torch-version }}${{ matrix.compute-platform }}
           if [ -f setup.py ]; then
-            sed -i $I_ARG "s/\(    version=\)\(.*\)\(\,$\)/\1\2 + \"$VERSION_SUFFIX\"\3/" setup.py
+            sed -i "s/\(    version=\)\(.*\)\(\,$\)/\1\2 + \"$VERSION_SUFFIX\"\3/w /tmp/version_str.txt" setup.py
+            if [ ! -s "/tmp/version_str.txt" ]; then
+                sed -i "s/\(    name=.*\,$\)/\1\n    version=\"0.0.1\" + \"$VERSION_SUFFIX\",/" setup.py
+            fi
           fi
 
           if [ -f pyproject.toml ]; then
-            sed -i $I_ARG "s/\(version=\"\)\(.*\)\"/\1\2$VERSION_SUFFIX\"/" pyproject.toml
+            sed -i "s/\(version=\"\)\(.*\)\"/\1\2$VERSION_SUFFIX\"/" pyproject.toml
           fi
         shell: bash
 
@@ -155,7 +180,7 @@ jobs:
             [ "$1" = "$2" ] && return 1 || versionlte $1 $2
           }
 
-          SETUPTOOLS_VERSION_LIMIT=""
+          SETUPTOOLS_VERSION_LIMIT="<75.9"
           if versionlt ${{ matrix.torch-version }} "2.2.0" ; then
             SETUPTOOLS_VERSION_LIMIT="<70"
           fi
