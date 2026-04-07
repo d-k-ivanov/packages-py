@@ -1,62 +1,77 @@
-#!/bin/bash
+#! /bin/bash
 
 set -eu -o pipefail
 
 SCRIPT_DIR=${BASH_SOURCE%/*}
 
-if [[ $REPO == "facebookresearch/Mask2Former" ]] &&
-  [[ $COMPUTE_PLATFORM == "cpu" ]]; then
-  patch -p0 <"$SCRIPT_DIR"/patches/Mask2Former_cpu.patch
-fi
-
-if { [[ $REPO == "rusty1s/pytorch_cluster" ]] || [[ $REPO == "facebookresearch/fairseq" ]]; } &&
-  [[ $OS == "Windows" ]] &&
-  [[ ${TORCH_VERSION:0:4} == "1.12" ]] &&
-  [[ $COMPUTE_PLATFORM == "cu116" ]]; then
-  # Fixes https://github.com/facebookresearch/pytorch3d/issues/1024
-  # shellcheck disable=SC2154
-  TORCH_PYBIND_DIR="$Python_ROOT_DIR/lib/site-packages/torch/include/pybind11"
-  patch -d "$TORCH_PYBIND_DIR" <"$SCRIPT_DIR"/patches/torch_pybind_cast_h.patch
-fi
-
-if [[ $REPO == "facebookresearch/pytorch3d" ]] || [[ $REPO == "facebookresearch/fairseq" ]]; then
-  CUB_VERSION=""
-  if [[ $OS == "Windows" ]] &&
-    [[ $REPO == "facebookresearch/pytorch3d" ]] &&
-    { [[ $COMPUTE_PLATFORM == "cu117" ]] || [[ $COMPUTE_PLATFORM == "cu118" ]] || [[ $COMPUTE_PLATFORM == "cu121" ]]; }; then
+if [[ $REPO == "facebookresearch/pytorch3d" ]]; then
+  if [[ $COMPUTE_PLATFORM == "cu118" ]] && [[ $OS == "Windows" ]]; then
     CUB_VERSION="1.17.2"
-  fi
-  if [[ $OS == "Linux" ]] &&
-    { [[ $COMPUTE_PLATFORM == "cu102" ]] || [[ $COMPUTE_PLATFORM == "cu113" ]]; }; then
-    CUB_VERSION="1.10.0"
-  fi
-
-  if [ -n "${CUB_VERSION}" ]; then
     mkdir cub
     curl -L https://github.com/NVIDIA/cub/archive/${CUB_VERSION}.tar.gz | tar -xzf - --strip-components=1 --directory cub
-    echo "CUB_HOME=$PWD/cub" >>"$GITHUB_ENV"
+    echo "CUB_HOME=$PWD/cub" >> "$GITHUB_ENV"
   fi
-fi
-
-if [[ $REPO == "facebookresearch/pytorch3d" ]] &&
-  [[ $OS == "Linux" ]] &&
-  [[ $COMPUTE_PLATFORM == "cu102" ]]; then
-  patch -p0 <"$SCRIPT_DIR"/patches/pytorch3d_cpp14.patch
 fi
 
 if [[ $REPO == "facebookresearch/fairseq" ]]; then
   pip install cython
-  patch -p0 <"$SCRIPT_DIR"/patches/fairseq_cub.patch
-fi
+  patch -p0 < "$SCRIPT_DIR"/package_specific/fairseq_cub.patch
 
-if [[ $REPO == "open-mmlab/mmcv" ]] &&
-  [[ $TORCH_VERSION == "1.12.1" ]] &&
-  [[ $COMPUTE_PLATFORM == "cu102" ]]; then
-  patch -p0 <"$SCRIPT_DIR"/patches/mmcv_cpp14.patch
+  # Fix 'std': ambiguous symbol error in compiled_autograd.h when compiling CUDA extensions on Windows
+  # https://github.com/pytorch/pytorch/issues/173232
+  if [[ $OS == "Windows" ]] && [[ $COMPUTE_PLATFORM != "cpu" ]]; then
+    COMPILED_AUTOGRAD="$(python -c 'import torch, os; print(os.path.dirname(torch.__file__))')/include/torch/csrc/dynamo/compiled_autograd.h"
+    sed -i 's/#if defined(_WIN32) && (defined(USE_CUDA) || defined(USE_ROCM))/#if defined(_WIN32) \&\& defined(__NVCC__)/' "$COMPILED_AUTOGRAD"
+  fi
 fi
 
 if [[ $REPO == "NVlabs/tiny-cuda-nn" ]]; then
   source "$SCRIPT_DIR"/.github/workflows/cuda/${OS}_env.sh
   echo "LIBRARY_PATH=/usr/local/cuda/lib64/stubs" >> "$GITHUB_ENV"
   echo "TCNN_CUDA_ARCHITECTURES=${TORCH_CUDA_ARCH_LIST}" | sed "s/\(\.\|\+PTX\)//g" >> "$GITHUB_ENV"
+
+  SETUPTOOLS_VERSION=$(pip show setuptools | grep '^Version:' | awk '{print $2}')
+  if python -c "from packaging.version import Version; exit(0 if Version('$SETUPTOOLS_VERSION') >= Version('82') else 1)"; then
+    pip install 'setuptools<82'
+  fi
+
+  patch -p0 < "$SCRIPT_DIR"/package_specific/tiny_cuda_nn.patch
+fi
+
+if [[ $REPO == "open-mmlab/mmcv" ]]; then
+  pip install addict yapf
+  SETUPTOOLS_VERSION=$(pip show setuptools | grep '^Version:' | awk '{print $2}')
+  if python -c "from packaging.version import Version; exit(0 if Version('$SETUPTOOLS_VERSION') >= Version('82') else 1)"; then
+    pip install 'setuptools<82'
+  fi
+
+  # Fix 'std': ambiguous symbol error in compiled_autograd.h when compiling CUDA extensions on Windows
+  # https://github.com/pytorch/pytorch/issues/173232
+  if [[ $OS == "Windows" ]] && [[ $COMPUTE_PLATFORM != "cpu" ]]; then
+    COMPILED_AUTOGRAD="$(python -c 'import torch, os; print(os.path.dirname(torch.__file__))')/include/torch/csrc/dynamo/compiled_autograd.h"
+    sed -i 's/#if defined(_WIN32) && (defined(USE_CUDA) || defined(USE_ROCM))/#if defined(_WIN32) \&\& defined(__NVCC__)/' "$COMPILED_AUTOGRAD"
+  fi
+
+  echo "MMCV_WITH_OPS=1" >> "$GITHUB_ENV"
+
+  if python -c "import sys; sys.exit(0 if sys.version_info >= (3, 13) else 1)"; then
+    patch -p0 < "$SCRIPT_DIR"/package_specific/mmcv_py313plus.patch
+  fi
+fi
+
+if [[ $REPO == "Dao-AILab/flash-attention" ]]; then
+  pip install psutil
+
+  echo FLASH_ATTENTION_FORCE_BUILD=TRUE >> "$GITHUB_ENV"
+  source "$SCRIPT_DIR"/.github/workflows/cuda/${OS}_env.sh
+  echo "FLASH_ATTN_CUDA_ARCHS=${TORCH_CUDA_ARCH_LIST}" | sed "s/\(\.\|\+PTX\)//g" >> "$GITHUB_ENV"
+
+  echo NVCC_THREADS=1 >> "$GITHUB_ENV"
+  if [[ $OS == "Linux" ]]; then
+    echo MAX_JOBS=2 >> "$GITHUB_ENV"
+  elif [[ $OS == "Windows" ]]; then
+    echo MAX_JOBS=3 >> "$GITHUB_ENV"
+  fi
+
+  patch -p0 < "$SCRIPT_DIR"/package_specific/flash_attention.patch
 fi

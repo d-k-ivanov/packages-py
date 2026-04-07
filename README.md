@@ -4,15 +4,16 @@ This repository serves as a toolset for building and indexing Python packages.
 
 ## Supported Platforms
 
-- **OS**: `windows-2019`, `ubuntu-24.04`, `macos-12(X64)`, `macos-14(ARM)`
+- **OS**: `windows-2022`, `ubuntu-24.04`, `macos-12(X64)`, `macos-14(ARM)`
 - **Platforms**: `cpu`, `cuda`, `rocm` (see: `pytorch/get_jobs.py`)
-- **Python**: `3.9` – `3.13`
-- **PyTorch**: `1.11.0` – `2.6.0` (see: `pytorch/get_jobs.py`)
+- **Python**: `3.9` – `3.14`
+- **PyTorch**: `1.11.0` – `2.7.1` (see: `pytorch/get_jobs.py`)
 
 ## Workflows
 
 1. **PyTorch Packages Builder Workflow:**
    - Automates the building of PyTorch-based packages with custom ops on common architectures.
+   - Uses build attestation to establish provenance for wheels.
    - Publishes the built packages on GitHub releases.
 
 2. **PEP 503 Compliant Package Index Builder Workflow:**
@@ -21,7 +22,7 @@ This repository serves as a toolset for building and indexing Python packages.
 
 ## Usage
 
-You can install packages with :
+You can install packages with:
 
 ```bash
 pip install <package_name> --extra-index-url https://d-k-ivanov.github.io/packages-py
@@ -42,7 +43,7 @@ pip install ./pytorch3d-0.7.8+pt2.5.1cu124-cp311-cp311-linux_x86_64.whl
 pip install ./pytorch3d-0.7.8+pt2.5.1cu124-cp311-cp311-win_amd64.whl
 ```
 
-Make sure to include the full version, including the local version identifier (part after `+`). The repository follows this version template:
+Make sure to include the full version, including the local version identifier(part after `+`). The repository follows this version template:
 
 ## Miscellaneous
 
@@ -52,10 +53,10 @@ Make sure to include the full version, including the local version identifier (p
 <package_name>-<version>+<OPTIONAL_commit_hash>pt<PyTorch_version><compute_platform>
 ```
 
-Where:`<compute_platform>` is `cpu`, `cu<CUDA_version>`, `rocm<ROCM_version>`.
+Where: `<compute_platform>` is `cpu`, `cu<CUDA_version>`, or `rocm<ROCM_version>`
 
 **No Support for Pip Cache:**
-`pip` relies on http cache, and GitHub generates on-the-fly redirections for release links, so they are probably not playing nicely together.
+`pip` relies on HTTP cache, and GitHub generates on-the-fly redirections for release links, so they are probably not playing nicely together.
 
 ## References
 
