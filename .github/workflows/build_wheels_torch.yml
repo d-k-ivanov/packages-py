@@ -25,9 +25,9 @@ on:
         type: string
         default: "3.10,3.11,3.12,3.13,3.14"
       limit-compute-platform:
-        description: "PyTorch compute platforms, separated with a comma (cpu,cu102,cu111,cu118,cu124,etc.)"
+        description: "PyTorch compute platforms, separated with a comma (cpu,cu118,cu124,cu130,etc.)"
         type: string
-        default: "cpu,cu118,cu124"
+        default: "cpu,cu118,cu124,cu130"
       include-hash:
         description: "Include commit hash in version"
         type: boolean

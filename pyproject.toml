@@ -5,7 +5,7 @@ dependencies = ["requests"]
 dynamic = ["version", "readme", "optional-dependencies"]
 
 [tool.flake8]
-max-line-length = 230
+max-line-length = 120
 
 [tool.black]
-line-length = 230
+line-length = 120
