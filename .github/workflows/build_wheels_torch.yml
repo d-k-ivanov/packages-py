@@ -5,7 +5,6 @@ on:
     inputs:
       repo:
         description: "PyTorch3D repository name with owner (facebookresearch/pytorch3d, facebookresearch/fairseq, etc.)"
-        description: "Repository name with owner, as in actions/checkout"
         required: true
         type: string
         default: "facebookresearch/pytorch3d"
