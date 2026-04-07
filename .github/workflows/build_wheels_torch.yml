@@ -9,7 +9,7 @@ on:
         type: string
         default: "facebookresearch/pytorch3d"
       repo-tag:
-        description: "Repository tag, branch, or commit hash (v0.7.6,v0.7.7,V0.7.8,v0.7.9, etc.)"
+        description: "Repository tag, branch, or commit hash (main,master,V0.7.8,v0.7.9, etc.)"
         type: string
         default: "main"
       repo-subdir:
@@ -25,9 +25,9 @@ on:
         type: string
         default: "3.10,3.11,3.12,3.13,3.14"
       limit-compute-platform:
-        description: "PyTorch compute platforms, separated with a comma (cpu,cu118,cu124,cu130,etc.)"
+        description: "PyTorch compute platforms, separated with a comma (cpu,cu118,cu124,cu124,cu130,etc.)"
         type: string
-        default: "cpu,cu118,cu124,cu130"
+        default: "cpu,cu130"
       include-hash:
         description: "Include commit hash in version"
         type: boolean
