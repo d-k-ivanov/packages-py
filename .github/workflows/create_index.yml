@@ -24,11 +24,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           REPO_NAME: ${{ github.repository }}
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python package_index/create_index.py
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
+        shell: bash
+        run: |
+          tar \
+            --dereference --hard-dereference \
+            --directory "_site/" \
+            -cvf "$RUNNER_TEMP/artifact.tar" \
+            --exclude=.git \
+            --exclude=.github \
+            .
 
   deploy:
     needs: create_index
@@ -40,7 +48,7 @@ jobs:
     steps:
       - name: Deploy artifact
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
         env:
           name: github-pages
           url: ${{ steps.deployment.outputs.page_url }}

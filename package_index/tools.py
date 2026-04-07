@@ -31,6 +31,7 @@ def get_short_description(term):
         response = client.models.generate_content(model="gemini-2.5-flash-lite", contents=request)
         return response.text.replace("\n", "") if response else term
     except Exception as e:
+        print(e)
         return term
 
 
@@ -56,6 +57,7 @@ def get_short_description_package(package):
         response = client.models.generate_content(model="gemini-2.5-flash-lite", contents=request)
         return response.text.replace("\n", "") if response else package
     except Exception as e:
+        print(e)
         return package
 
 
@@ -94,4 +96,5 @@ def get_short_description_packages(packages):
         )
         return response.text if response else fallback
     except Exception as e:
+        print(e)
         return fallback
