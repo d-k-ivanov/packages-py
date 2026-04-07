@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 get_torch_cuda_arch_list() {
   python "$(dirname "${BASH_SOURCE[0]}")/get_torch_cuda_arch_list.py"

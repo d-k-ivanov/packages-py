@@ -36,10 +36,7 @@ for arch in archs:
     if arch_type == "compute":
         arch_has_ptx[base] = True
 
-parsed_archs = [
-    f"{base}+PTX" if arch_has_ptx[base] else base
-    for base in arch_order
-]
+parsed_archs = [f"{base}+PTX" if arch_has_ptx[base] else base for base in arch_order]
 
 if not parsed_archs:
     print("Detected CUDA arch data is empty after parsing.", file=sys.stderr)
