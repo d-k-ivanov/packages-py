@@ -4,25 +4,31 @@ on:
   workflow_dispatch:
     inputs:
       repo:
+        description: "PyTorch3D repository name with owner (facebookresearch/pytorch3d, facebookresearch/fairseq, etc.)"
         description: "Repository name with owner, as in actions/checkout"
         required: true
         type: string
+        default: "facebookresearch/pytorch3d"
       repo-tag:
-        description: "Repository tag, as in actions/checkout"
+        description: "Repository tag, branch, or commit hash (v0.7.6,v0.7.7,V0.7.8,v0.7.9, etc.)"
         type: string
+        default: "v0.7.9"
       repo-subdir:
-        description: "Relative path to package dir (or empty if root)"
+        description: "Relative path to package dir where setup.py is found (or empty if root)"
         type: string
       torch-version:
-        description: "Torch versions, separated with a comma"
+        description: "Torch versions, separated with a comma (2.4.1,2.5.1,2.7.1,2.9.1,2.11.0,etc.)"
         required: true
         type: string
+        default: "2.5.1"
       limit-python:
-        description: "Python versions, separated with a comma"
+        description: "Python versions, separated with a comma (3.9,3.10,3.11,3.12,3.13,3.14,etc.)"
         type: string
+        default: "3.10,3.11,3.12,3.13,3.14"
       limit-compute-platform:
-        description: "PyTorch compute platforms, separated with a comma"
+        description: "PyTorch compute platforms, separated with a comma (cpu,cu102,cu111,cu118,cu124,etc.)"
         type: string
+        default: "cpu,cu118,cu124"
       include-hash:
         description: "Include commit hash in version"
         type: boolean
